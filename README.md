@@ -259,4 +259,3 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 **Ready to optimize your Fiverr gigs? Install the extension and start improving your sales today! 🚀**
-# Fiver-gig-extension
