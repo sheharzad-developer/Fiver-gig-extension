@@ -46,6 +46,10 @@ A powerful browser extension that helps Fiverr sellers optimize their gigs with 
    python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    pip install fastapi uvicorn requests python-dotenv
+   
+   # Copy environment template
+   cp .env.example .env
+   # Edit .env file if you need to customize settings
    ```
 
 3. **Install Ollama and model**
