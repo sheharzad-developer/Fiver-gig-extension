@@ -1,0 +1,13 @@
+INFO:     Started server process [35887]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+[DEBUG] call_ollama called with model: llama3.1
+[DEBUG] Trying /api/chat endpoint...
+[DEBUG] /api/chat response status: 200
+[DEBUG] /api/chat successful, content length: 1230
+INFO:     127.0.0.1:55665 - "POST /improve_gig HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [35887]

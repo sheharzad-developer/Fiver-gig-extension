@@ -1,0 +1,157 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+      body { margin: 0; width: 360px; background:#0b0c10; color:#e5e7eb; }
+      header { padding: 12px 14px; font-weight: 700; border-bottom:1px solid #1f2937; }
+      main { padding: 12px 14px; display: grid; gap: 10px; }
+      button { background:#111827; color:#e5e7eb; border:1px solid #374151; border-radius:10px; padding:8px 10px; cursor:pointer; }
+      button:hover { background:#1f2937; }
+      .row { display:flex; gap:8px; flex-wrap: wrap; }
+      .card { background:#0f1115; border:1px solid #1f2937; border-radius:12px; padding:10px; }
+      .title { font-size:13px; font-weight:700; margin-bottom:6px; }
+      .mono { white-space: pre-wrap; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+      .pill { display:inline-flex; background:#0b1220; border:1px solid #1e3a8a; padding:4px 8px; border-radius:999px; margin:2px; font-size:12px; }
+      .small { font-size:12px; opacity:.9 }
+      .muted { color:#9ca3af }
+      .hr { height:1px; background:#1f2937; margin:6px 0 2px; }
+      .actions { display:flex; gap:6px; flex-wrap:wrap; }
+      .ok { color:#10b981; }
+      .warn { color:#f59e0b; }
+      .error { color:#ef4444; }
+      .hidden { display:none; }
+      .list { margin:0; padding-left: 18px; }
+      .list li { margin: 2px 0; }
+    </style>
+  </head>
+  <body>
+    <header>Fiverr AI Helper</header>
+    <main>
+      <div class="row">
+        <button id="tabImprove">Improve</button>
+        <button id="tabReply">Reply</button>
+        <button id="tabUpcraft">Upcraft</button>
+      </div>
+    
+      <div id="viewImprove">
+        <!-- your existing Improve UI stays here (from previous step) -->
+        <div class="row" style="margin-top:8px;">
+          <button id="btnImprove">Improve Gig</button>
+          <button id="btnInsert" class="hidden">Insert to Page</button>
+        </div>
+        <div id="status" class="small muted" style="margin-top:6px;">Ready.</div>
+    
+        <div id="sectionTitle" class="card hidden">
+          <div class="title">✅ Suggested Title</div>
+          <div id="titleText" class="mono"></div>
+          <div class="actions"><button data-copy="#titleText">Copy Title</button></div>
+        </div>
+    
+        <div id="sectionDesc" class="card hidden">
+          <div class="title">✅ Suggested Description</div>
+          <div id="descText" class="mono"></div>
+          <div class="actions"><button data-copy="#descText">Copy Description</button></div>
+        </div>
+    
+        <div id="sectionTags" class="card hidden">
+          <div class="title">🏷️ Tags</div>
+          <div id="tagsWrap"></div>
+        </div>
+    
+        <div id="sectionFAQs" class="card hidden">
+          <div class="title">❓ FAQs</div>
+          <div id="faqsWrap" class="mono"></div>
+        </div>
+    
+        <div id="sectionSteps" class="card hidden">
+          <div class="title">🧭 Step-by-step Checklist</div>
+          <ol id="stepsList" class="list"></ol>
+        </div>
+    
+        <div id="sectionChecks" class="card hidden">
+          <div class="title">🔎 Quick Checks</div>
+          <div id="checksWrap" class="small"></div>
+        </div>
+    
+        <div id="raw" class="card hidden">
+          <div class="title">🚀 Complete Gig Optimization Analysis</div>
+          <pre id="rawText" class="mono"></pre>
+          <div class="actions" style="margin-top: 10px;">
+            <button id="copyTitle" class="hidden">📋 Copy Title</button>
+            <button id="copyDescription" class="hidden">📋 Copy Description</button>
+            <button id="copyTags" class="hidden">📋 Copy Tags</button>
+            <button id="copyAll" class="hidden">📋 Copy All</button>
+          </div>
+        </div>
+
+        <!-- Chatbot Mode -->
+        <div id="chatbotSection" class="card hidden">
+          <div class="title">💬 Ask Follow-up Questions</div>
+          <div class="small muted">Ask me to make changes like "make it more formal" or "add more benefits"</div>
+          <div style="margin-top: 8px;">
+            <input id="chatInput" placeholder="e.g., make it more formal, add more benefits..." style="width: 100%; padding: 8px; border-radius: 8px; border: 1px solid #374151; background: #0f1115; color: #e5e7eb; margin-bottom: 8px;" />
+            <button id="sendChat">Send</button>
+          </div>
+          <div id="chatHistory" style="margin-top: 8px; max-height: 200px; overflow-y: auto;"></div>
+        </div>
+      </div>
+    
+      <!-- Reply view (reuse your current) -->
+      <div id="viewReply" class="hidden">
+        <div class="row" style="margin-top:8px;">
+          <button id="btnReply">Draft Reply</button>
+        </div>
+        <div id="replyOut" class="card" style="margin-top:8px;">
+          <div class="title">Buyer Reply Draft</div>
+          <pre id="replyText" class="mono"></pre>
+        </div>
+      </div>
+    
+      <!-- NEW: Upcraft view -->
+      <div id="viewUpcraft" class="hidden">
+        <div class="card">
+          <div class="title">✍️ Upcraft — Edit & Improve</div>
+          <label class="small muted">Title</label>
+          <input id="ucTitle" style="width:100%;padding:8px;border-radius:8px;border:1px solid #374151;background:#0f1115;color:#e5e7eb;margin:4px 0;" />
+    
+          <label class="small muted">Description</label>
+          <textarea id="ucDesc" rows="8" style="width:100%;padding:8px;border-radius:8px;border:1px solid #374151;background:#0f1115;color:#e5e7eb;margin:4px 0;"></textarea>
+    
+          <label class="small muted">Niche / Primary Keyword (optional)</label>
+          <input id="ucNiche" style="width:100%;padding:8px;border-radius:8px;border:1px solid #374151;background:#0f1115;color:#e5e7eb;margin:4px 0;" />
+    
+          <div class="row" style="margin-top:6px;">
+            <button id="ucLoadFromPage">Load from Page</button>
+            <button id="ucRewrite">AI Rewrite</button>
+            <button id="ucVariations">3 Title Variations</button>
+            <button id="ucInsert">Insert to Page</button>
+          </div>
+          <div id="ucStatus" class="small muted" style="margin-top:6px;">Ready.</div>
+        </div>
+    
+        <div id="ucResults" class="card hidden" style="margin-top:8px;">
+          <div class="title">AI Suggestions</div>
+          <div class="small muted">Click to copy.</div>
+          <div style="margin-top:6px;">
+            <div class="small">Title</div>
+            <pre id="ucOutTitle" class="mono"></pre>
+            <div class="small">Description</div>
+            <pre id="ucOutDesc" class="mono"></pre>
+            <div class="small">Tags</div>
+            <div id="ucOutTags"></div>
+            <div class="small" style="margin-top:6px;">FAQs</div>
+            <pre id="ucOutFaqs" class="mono"></pre>
+          </div>
+        </div>
+    
+        <div id="ucVarBox" class="card hidden" style="margin-top:8px;">
+          <div class="title">🎯 Title Variations</div>
+          <ul id="ucVarList" class="list"></ul>
+        </div>
+      </div>
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
